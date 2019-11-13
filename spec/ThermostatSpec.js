@@ -24,15 +24,34 @@ describe('Thermostat', function(){
       expect(thermostat.temperature).toEqual(19);
     });
 
+    it("can't decrease below the min temp", function() {
+      for (var i = 0; i <= 9 ; i++) {
+              thermostat.decreaseTemp();
+      }
+      expect( function() {thermostat.decreaseTemp(); }).toThrow("Min temp reached");
+    });
+
   });
 
   describe('power saving mode', function(){
 
     it('is on, max temp should be 25', function(){
       thermostat.temperature = 25;
-      thermostat.powerSavingMode = true;
       expect( function() { thermostat.increaseTemp(); }).toThrow("Max temperature exceeded");
     });
+
+    it("check if on", function(){
+      expect(thermostat.isPowerSavingModeOn()).toEqual(true);
+    });
+
+    it("turn off", function(){
+      thermostat.changePowerSavingMode();
+      expect(thermostat.isPowerSavingModeOn()).toEqual(false);
+    });
   });
+
+
+
+
 
 });
