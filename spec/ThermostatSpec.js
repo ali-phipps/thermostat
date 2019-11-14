@@ -1,57 +1,37 @@
-describe('Thermostat', function(){
-  beforeEach(function(){
-    thermostat = new Thermostat();
-  });
+function Thermostat(){
+    this.MINIMUM_TEMPERATURE = 10;
+    this.temperature = 20;
+    this.powerSavingMode = true;
+    this.MAXIMUM_TEMPERATURE = 25;
+};
 
-  it('new thermostat starts at 20', function(){
-    expect(thermostat.temperature).toEqual(20);
-  });
+Thermostat.prototype.temperatureRaise = function(amount) {
+    this.temperature + amount > this.MAXIMUM_TEMPERATURE ? this.temperature = this.MAXIMUM_TEMPERATURE :
+    this.temperature += amount ;
+};
 
-  it('new thermostat min temp = 10', function(){
-    expect(thermostat.minimumTemperature).toEqual(10);
-  });
+Thermostat.prototype.temperatureLower = function(amount) {
+    this.temperature - amount < this.MINIMUM_TEMPERATURE ? this.temperature = this.MINIMUM_TEMPERATURE :
+    this.temperature -= amount ;
+};
 
+Thermostat.prototype.switchMode = function() {
+    this.powerSavingMode = !this.powerSavingMode;
+    this.powerSavingMode === true ? this.MAXIMUM_TEMPERATURE = 25 :
+    this.MAXIMUM_TEMPERATURE = 32;
+};
 
-  describe('changes temperature', function(){
+Thermostat.prototype.reset = function() {
+    this.temperature = 20;
+};
 
-    it('increases by 1', function(){
-      thermostat.increaseTemp();
-      expect(thermostat.temperature).toEqual(21);
-    });
+Thermostat.prototype.usageMode = function() {
+    if (this.temperature < 18){
+        return "low-usage";
+    } else if (this.temperature > 25) {
+        return "high-usage";
+    } else {
+        return "medium-usage";
+    }
 
-    it('decreases by 1', function(){
-      thermostat.decreaseTemp();
-      expect(thermostat.temperature).toEqual(19);
-    });
-
-    it("can't decrease below the min temp", function() {
-      for (var i = 0; i <= 9 ; i++) {
-              thermostat.decreaseTemp();
-      }
-      expect( function() {thermostat.decreaseTemp(); }).toThrow("Min temp reached");
-    });
-
-  });
-
-  describe('power saving mode', function(){
-
-    it('is on, max temp should be 25', function(){
-      thermostat.temperature = 25;
-      expect( function() { thermostat.increaseTemp(); }).toThrow("Max temperature exceeded");
-    });
-
-    it("check if on", function(){
-      expect(thermostat.isPowerSavingModeOn()).toEqual(true);
-    });
-
-    it("turn off", function(){
-      thermostat.changePowerSavingMode();
-      expect(thermostat.isPowerSavingModeOn()).toEqual(false);
-    });
-  });
-
-
-
-
-
-});
+};
